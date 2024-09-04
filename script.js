@@ -98,6 +98,47 @@ function createList() {
     return (string += "null");
   };
 
+  const insertAt = (value, index) => {
+    const node = createNode(value);
+
+    if (index === 0) {
+      node.nextNode = listHead;
+      listHead = node;
+      if (listSize === 0) listTail = node;
+    } else if (index === listSize) {
+      listTail.nextNode = node;
+      listTail = node;
+    } else {
+      const prev = at(index - 1);
+      const current = prev.nextNode;
+      prev.nextNode = node;
+      node.nextNode = current;
+    }
+
+    listSize++;
+  };
+
+  const removeAt = (index) => {
+    if (index === 0) {
+      if (listSize === 1) {
+        listHead = null;
+        listTail = null;
+      } else {
+        listHead = listHead.nextNode;
+      }
+    } else if (index === listSize - 1) {
+      const prev = at(index - 1);
+      prev.nextNode = null;
+      listTail = prev;
+    } else {
+      const prev = at(index - 1);
+      const current = prev.nextNode;
+      prev.nextNode = current.nextNode;
+    }
+
+    listSize--;
+  };
+
   return {
     listHead,
     listTail,
@@ -112,6 +153,8 @@ function createList() {
     contains,
     find,
     toString,
+    insertAt,
+    removeAt,
   };
 }
 
